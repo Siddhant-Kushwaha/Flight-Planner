@@ -1,0 +1,18 @@
+flight data- flight name, flight number, from, to, days, duration,cost
+passenger data- name, aadhar number, phone, address, passport no.,dob
+
+*booking? show ticket?
+
+passenger signup login
+flight  history
+travel route
+discount every next visit
+source destination
+min time or min cost route
+map for flights (adjacency list)
+time / duration cost
+flights of diff companies
+date / day of availability of flights
+A* algo
+cities / places
+flight data,passenger data - oops
