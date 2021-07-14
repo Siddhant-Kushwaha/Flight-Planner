@@ -16,3 +16,4 @@ date / day of availability of flights
 A* algo
 cities / places
 flight data,passenger data - oops
+dijkstras algo
