@@ -11,22 +11,22 @@ using namespace std;
 
 class Passenger {
     public:
-	char name[20];
-	char password[20];
+	char *name;
+	char *password;
 	int aadharNo;
-	char phone[10];
-	char address[40];
+	char *phone;
+	char *address;
 	int passportNo;
-	char dob[10];
+	char *dob;
 
-	Passenger(char name[20],int aadharNo,string phone,string address,int passportNo,string dob)
+	Passenger(char name[20],int aadharNo,char phone[10],char address[40],int passportNo,char dob[10])
 	{
-        this->name=name.c_str();
+        this->name=name;
         this->aadharNo=aadharNo;
-        this->phone=phone.c_str();
-        this->address=address.c_str();
+        this->phone=phone;
+        this->address=address;
         this->passportNo=passportNo;
-        this->dob=dob.c_str();
+        this->dob=dob;
 	}
 	Passenger(){}
 
@@ -51,27 +51,27 @@ class Passenger {
 	    cout<<"\nDate Of Birth : "<<dob;
 	}
 
-	bool checkPass(string password)
+	bool checkPass(char password[20])
 	{
 	    cout<<"pass : "<<password;
 	    return this->password==password;
 	}
 
-	string getName()
+	char* getName()
 	{
 	    return name;
 	}
 };
 
 class Flight {
-	string flightName;
+	char *flightName;
 	int flightNo;
-	string from;
-	string to;
+	char *from;
+	char *to;
 	double cost;
 	int duration;
 public:
-	Flight(string name, int no, string from, string to, double cost, int duration)
+	Flight(char name[25], int no,char from[20], char to[20], double cost, int duration)
 	{
 		this->flightName = name;
 		this->flightNo = no;
