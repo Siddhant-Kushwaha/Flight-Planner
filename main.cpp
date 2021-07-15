@@ -10,22 +10,23 @@ using namespace std;
 
 
 class Passenger {
-	string name;
-	string password;
+    public:
+	char name[20];
+	char password[20];
 	int aadharNo;
-	string phone;
-	string address;
+	char phone[10];
+	char address[40];
 	int passportNo;
-	string dob;
-public:
-	Passenger(string name,int aadharNo,string phone,string address,int passportNo,string dob)
+	char dob[10];
+
+	Passenger(char name[20],int aadharNo,string phone,string address,int passportNo,string dob)
 	{
-        this->name=name;
+        this->name=name.c_str();
         this->aadharNo=aadharNo;
-        this->phone=phone;
-        this->address=address;
+        this->phone=phone.c_str();
+        this->address=address.c_str();
         this->passportNo=passportNo;
-        this->dob=dob;
+        this->dob=dob.c_str();
 	}
 	Passenger(){}
 
@@ -42,16 +43,17 @@ public:
 
 	void output()
 	{
-	     cout<<"Enter Name : "<<name;
-	    cout<<"Aadhar Number : "<<aadharNo;
-	    cout<<"Phone : "<<phone;
-	    cout<<"Address : "<<address;
-	    cout<<"Passport Number : "<<passportNo;
-	    cout<<"Date Of Birth : "<<dob;
+	     cout<<"\nName : "<<name;
+	    cout<<"\nAadhar Number : "<<aadharNo;
+	    cout<<"\nPhone : "<<phone;
+	    cout<<"\nAddress : "<<address;
+	    cout<<"\nPassport Number : "<<passportNo;
+	    cout<<"\nDate Of Birth : "<<dob;
 	}
 
 	bool checkPass(string password)
 	{
+	    cout<<"pass : "<<password;
 	    return this->password==password;
 	}
 
@@ -100,34 +102,35 @@ public:
 	    cout<<"duration : "<<duration;
 
 	}
-
-
 };
-
 
 bool login(Passenger&p,fstream&file)
 {
+    file.seekg(0,ios::beg);
     bool loggedin=false;
-    string name;
-    string password;
-    cout<<"Enter Name : ";cin>>name;
-    cout<<"Enter Password : ";cin>>password;
-    file.open("passenger.dat",ios::in|ios::binary);
-    while(file.read((char*)&p,sizeof(p)))
+    Passenger temp;
+    char name[20];
+    char password[20];
+    cout<<"\nEnter Name : ";cin>>name;
+    cout<<"\nEnter Password : ";cin>>password;
+    while(file.read((char*)&temp,sizeof(temp)))
     {
-        if(p.getName()==name && p.checkPass(password))
-            {loggedin=true;break;}
+        if(temp.getName()==name && temp.checkPass(password))
+        {
+            p=temp;loggedin=true;
+            break;
+        }
     }
     return loggedin;
 }
 
 
 void signup(fstream&file){
-  file.open("passenger.dat",ios::app|ios::binary);
   Passenger p;
   p.input();
-  file.write((char*)&p,sizeof(p));
-  file.close();
+  p.output();
+  if(file.write((char*)&p,sizeof(p)))
+    cout<<"successfully signed up";
 }
 
 
@@ -137,6 +140,7 @@ int main()
     Passenger p;
     int ch;
     fstream file;
+    file.open("passenger.dat",ios::app|ios::in|ios::binary);
     do{
         cout<<"1.Signup\n ";
         cout<<"2.Login \n ";
@@ -145,10 +149,12 @@ int main()
         cin>>ch;
         switch(ch)
         {
-            case 1:signup(file);
+            case 1:signup(file);break;
             case 2:if(login(p,file)){
+                cout<<endl;
                 p.output();
-            };
+                break;
+            }
             cout<<"enter";
 
         }
