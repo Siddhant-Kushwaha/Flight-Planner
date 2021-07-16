@@ -4,30 +4,32 @@
 #include<queue>
 #include<string>
 #include<fstream>
+#include<cstring>
 
 using namespace std;
 
 
 
 class Passenger {
-    public:
-	char *name;
-	char *password;
-	int aadharNo;
-	char *phone;
-	char *address;
-	int passportNo;
-	char *dob;
 
-	Passenger(char name[20],int aadharNo,char phone[10],char address[40],int passportNo,char dob[10])
-	{
-        this->name=name;
-        this->aadharNo=aadharNo;
-        this->phone=phone;
-        this->address=address;
-        this->passportNo=passportNo;
-        this->dob=dob;
-	}
+	char name[20];
+	char password[20];
+	char aadharNo[20];
+	char phone[10];
+	char address[40];
+	char passportNo[20];
+	char dob[10];
+public:
+//	Passenger(char name[20],char aadharNo[20],char phone[10],char address[40],char passportNo[20],char dob[10])
+//	{
+//        strcpy(this->name,name);
+//        strcpy(this->aadharNo,aadharNo);
+//        strcpy(this->phone,phone);
+//        strcpy(this->address,address);
+//        strcpy(this->passportNo,passportNo);
+//        strcpy(this->dob,dob);
+//	}
+
 	Passenger(){}
 
 	void input()
@@ -43,7 +45,7 @@ class Passenger {
 
 	void output()
 	{
-	     cout<<"\nName : "<<name;
+        cout<<"\nName : "<<name;
 	    cout<<"\nAadhar Number : "<<aadharNo;
 	    cout<<"\nPhone : "<<phone;
 	    cout<<"\nAddress : "<<address;
@@ -53,33 +55,32 @@ class Passenger {
 
 	bool checkPass(char password[20])
 	{
-	    cout<<"pass : "<<password;
-	    return this->password==password;
+	    return strcmp(this->password,password);
 	}
 
-	char* getName()
+	bool checkName(char name[20])
 	{
-	    return name;
+	    return strcmp(this->name,name);
 	}
 };
 
 class Flight {
-	char *flightName;
+	char flightName[20];
 	int flightNo;
-	char *from;
-	char *to;
+	char from[20];
+	char to[20];
 	double cost;
 	int duration;
 public:
-	Flight(char name[25], int no,char from[20], char to[20], double cost, int duration)
-	{
-		this->flightName = name;
-		this->flightNo = no;
-		this->from=from;
-		this->to=to;
-		this->cost=cost;
-		this->duration=duration;
-	}
+//	Flight(char name[25], int no,char from[20], char to[20], double cost, int duration)
+//	{
+//		this->flightName = name;
+//		this->flightNo = no;
+//		this->from=from;
+//		this->to=to;
+//		this->cost=cost;
+//		this->duration=duration;
+//	}
 	Flight(){}
 
 	void input()
@@ -115,7 +116,7 @@ bool login(Passenger&p,fstream&file)
     cout<<"\nEnter Password : ";cin>>password;
     while(file.read((char*)&temp,sizeof(temp)))
     {
-        if(temp.getName()==name && temp.checkPass(password))
+        if(!temp.checkName(name) && !temp.checkPass(password))
         {
             p=temp;loggedin=true;
             break;
