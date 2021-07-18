@@ -1,23 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
 class Flight {
-	char flightName[200];
+	char flightName[20];
 	int flightNo;
-	char from[200];
-	char to[200];
+	char from[20];
+	char to[20];
 	int cost;
 	int duration;
 public:
 
 	Flight(){}
-    Flight(string name, int no,string from, string to, int cost, int duration)
-	{		strcpy(this->flightName,name.c_str());
-		this->flightNo=no;
-		strcpy(this->from,from.c_str());
-	      strcpy(this->to,to.c_str());
-		this->cost=cost;
-	this->duration=duration;
-}
 	void input()
 	{
 	    cout<<"Flight Name : ";cin>>flightName;
@@ -27,16 +19,17 @@ public:
 	    cout<<"cost : ";cin>>cost;
 	    cout<<"duration : ";cin>>duration;
 	}
+
     void entry(string name, int no,string from, string to, int cost, int duration)
     {
-       strcpy(this->flightName,name.c_str());
+        strcpy(this->flightName,name.c_str());
 		this->flightNo=no;
 		strcpy(this->from,from.c_str());
-	      strcpy(this->to,to.c_str());
+        strcpy(this->to,to.c_str());
 		this->cost=cost;
-	this->duration=duration;
-
+        this->duration=duration;
     }
+
 	void output()
 	{
 	    cout<<"Flight Name : "<<flightName<<'\n';
@@ -46,6 +39,36 @@ public:
 	    cout<<"cost : "<<cost<<'\n';
 	    cout<<"duration : "<<duration<<'\n';
 
+	}
+
+	string getName()
+	{
+	    return (string)flightName;
+	}
+
+	int getFlightNo()
+	{
+	    return flightNo;
+	}
+
+	string getFrom()
+	{
+	    return (string)from;
+	}
+
+	string getTo()
+	{
+	    return (string)to;
+	}
+
+	int getCost()
+	{
+	    return cost;
+	}
+
+	int getDuration()
+	{
+	    return duration;
 	}
 };
 

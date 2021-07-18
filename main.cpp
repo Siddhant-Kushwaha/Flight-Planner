@@ -5,6 +5,8 @@
 #include<string>
 #include<fstream>
 #include<cstring>
+#include<set>
+#include<stack>
 
 using namespace std;
 
@@ -69,20 +71,11 @@ class Flight {
 	int flightNo;
 	char from[20];
 	char to[20];
-	double cost;
+	int cost;
 	int duration;
 public:
-//	Flight(char name[25], int no,char from[20], char to[20], double cost, int duration)
-//	{
-//		this->flightName = name;
-//		this->flightNo = no;
-//		this->from=from;
-//		this->to=to;
-//		this->cost=cost;
-//		this->duration=duration;
-//	}
-	Flight(){}
 
+	Flight(){}
 	void input()
 	{
 	    cout<<"Flight Name : ";cin>>flightName;
@@ -93,15 +86,55 @@ public:
 	    cout<<"duration : ";cin>>duration;
 	}
 
+    void entry(string name, int no,string from, string to, int cost, int duration)
+    {
+        strcpy(this->flightName,name.c_str());
+		this->flightNo=no;
+		strcpy(this->from,from.c_str());
+        strcpy(this->to,to.c_str());
+		this->cost=cost;
+        this->duration=duration;
+    }
+
 	void output()
 	{
-	    cout<<"Flight Name : "<<flightName;
-	    cout<<"Flight Number : "<<flightNo;
-	    cout<<"from : "<<from;
-	    cout<<"to : "<<to;
-	    cout<<"cost : "<<cost;
-	    cout<<"duration : "<<duration;
+	    cout<<"Flight Name : "<<flightName<<'\n';
+	    cout<<"Flight Number : "<<flightNo<<'\n';
+	    cout<<"from : "<<from<<'\n';
+	    cout<<"to : "<<to<<'\n';
+	    cout<<"cost : "<<cost<<'\n';
+	    cout<<"duration : "<<duration<<'\n';
 
+	}
+
+	string getName()
+	{
+	    return (string)flightName;
+	}
+
+	int getFlightNo()
+	{
+	    return flightNo;
+	}
+
+	string getFrom()
+	{
+	    return (string)from;
+	}
+
+	string getTo()
+	{
+	    return (string)to;
+	}
+
+	int getCost()
+	{
+	    return cost;
+	}
+
+	int getDuration()
+	{
+	    return duration;
 	}
 };
 
@@ -135,12 +168,97 @@ void signup(fstream&file){
 }
 
 
+//void dfs(string name,unordered_map<string,vector<Flight>>&graph,unordered_map<string,bool> &visited)
+//{
+//    visited[name]=true;
+//    for(auto&i:graph[name]){
+//        if(!visited[i.getTo()])
+//            dfs(i.getTo(),graph,visited);
+//    }
+//    return;
+//}
+//
+//void dfs_util(unordered_map<string,vector<Flight>>&graph)
+//{
+//    unordered_map<string,bool>visited;
+//    int k=0;
+//    for(auto&i:graph)
+//    {
+//        if(!visited[i.first]){
+//            dfs(i.first,graph,visited);
+//            k++;
+//        }
+//    }
+//    cout<<"Disconnected Components : "<<k<<endl;
+//}
+
+int shortestPath(unordered_map<string,vector<Flight>>&graph,string src,string dest)
+{
+    unordered_map<string,int>dist;
+    unordered_map<string,Flight>parent;
+    dist[src]=0;
+    set<pair<int,string>>s;
+    s.insert({0,src});
+    while(!s.empty())
+    {
+        pair<int,string>t=*(s.begin());
+        s.erase(s.begin());
+        string fromCity=t.second;
+        for(auto&f:graph[t.second])
+        {
+            string toCity=f.getTo();
+            if(dist[toCity]==0)dist[toCity]=INT_MAX;
+
+            if(dist[toCity]>dist[fromCity]+f.getCost()){
+                 if(s.find({dist[toCity],toCity})!=s.end()){
+                     s.erase({dist[toCity],toCity});
+                 }
+                 dist[toCity]=dist[fromCity]+f.getCost();
+                 s.insert({dist[toCity],toCity});
+                 parent[toCity]=f;
+            }
+        }
+
+    }
+    stack<Flight>st;
+    string temp=dest;
+    while(parent[dest].getFrom()!=src){
+        st.push(parent[dest]);
+        dest=parent[dest].getFrom();
+    }
+    st.push(parent[dest]);
+    while(!st.empty()){
+        st.top().output();cout<<endl;
+        st.pop();
+    }
+    return dist[temp];
+}
+
+
 int main()
 {
     vector<Passenger> psngrs;
     Passenger p;
     int ch;
-    fstream file;
+    fstream file,file2;
+    Flight ff;
+    unordered_map<string,vector<Flight>> graph;
+    file2.open("Flights.dat",ios::in|ios::binary);
+    while(file2.read((char*)&ff,sizeof(ff)))
+    {
+        graph[ff.getFrom()].push_back(ff);
+    }
+
+//    for(auto&i:graph)
+//    {
+//        cout<<i.first<<" : "<<endl;
+//        for(auto&j:i.second) j.output();
+//        cout<<endl<<endl;
+//    }
+
+//    cout<<shortestPath(graph,"Karachi","Chicago");
+
+//    dfs_util(graph);
     file.open("passenger.dat",ios::app|ios::in|ios::binary);
     do{
         cout<<"1.Signup\n ";
