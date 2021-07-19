@@ -10,7 +10,7 @@
 
 using namespace std;
 
-
+unordered_map<string,vector<Flight>> graph;
 
 class Passenger {
 
@@ -21,6 +21,9 @@ class Passenger {
 	char address[40];
 	char passportNo[20];
 	char dob[10];
+	int history[15];
+	int n;
+	int discount;
 public:
 //	Passenger(char name[20],char aadharNo[20],char phone[10],char address[40],char passportNo[20],char dob[10])
 //	{
@@ -32,7 +35,10 @@ public:
 //        strcpy(this->dob,dob);
 //	}
 
-	Passenger(){}
+	Passenger()
+	{
+	    n=0;
+    }
 
 	void input()
 	{
@@ -63,6 +69,31 @@ public:
 	bool checkName(char name[20])
 	{
 	    return strcmp(this->name,name);
+	}
+	void book()
+	{   string src,dest;
+	    char x;
+	    cout<<"Enter Source City : ";
+	    cin>>src;
+	    cout<<"Enter Destination City : ";
+	    cin>>dest;
+	    cout<<"What matters more to you Time or Money?(Press t for Time and m for Money) : \n";
+
+	    do()
+	    { cin>>x;
+	        if(x=='t')
+        {
+            ShortestPathTime(src,dest);
+        }
+        else if(x=='m')
+        {
+            ShortestPathCost(src,dest);
+        }
+        else
+        {
+            cout<<"It looks like enjoyment matters more to you.(Press either t or m)"<<'\n';
+        }
+	    }while(x=='t'||x=='m')
 	}
 };
 
@@ -242,7 +273,7 @@ int main()
     int ch;
     fstream file,file2;
     Flight ff;
-    unordered_map<string,vector<Flight>> graph;
+
     file2.open("Flights.dat",ios::in|ios::binary);
     while(file2.read((char*)&ff,sizeof(ff)))
     {
