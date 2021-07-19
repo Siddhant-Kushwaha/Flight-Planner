@@ -135,14 +135,14 @@ public:
         this->duration=duration;
     }
 
-	void output()
+	void output(int c,int r)
 	{
-	    cout<<"Flight Name : "<<flightName<<'\n';
-	    cout<<"Flight Number : "<<flightNo<<'\n';
-	    cout<<"from : "<<from<<'\n';
-	    cout<<"to : "<<to<<'\n';
-	    cout<<"cost : "<<cost<<'\n';
-	    cout<<"duration : "<<duration<<'\n';
+	    gotoxy(c/2-9,r/2-3);cout<<"Flight Name : "<<flightName;
+	    gotoxy(c/2-9,r/2-3);cout<<"Flight Number : "<<flightNo;
+	    gotoxy(c/2-9,r/2-3);cout<<"from : "<<from;
+	    gotoxy(c/2-9,r/2-3);cout<<"to : "<<to;
+	    gotoxy(c/2-9,r/2-3);cout<<"cost : "<<cost;
+	    gotoxy(c/2-9,r/2-3);cout<<"duration : "<<duration;
 
 	}
 
@@ -229,12 +229,16 @@ public:
 
 	void output(int c,int r)
 	{
-        gotoxy(c/2-12,r/2-3);cout<<"Enter Name : "<<name;
+        gotoxy(c/2-12,r/2-3);cout<<"Name : "<<name;
 	    gotoxy(c/2-12,r/2-2);cout<<"Aadhar Number : "<<aadharNo;
 	    gotoxy(c/2-12,r/2-1);cout<<"Phone : "<<phone;
 	    gotoxy(c/2-12,r/2);cout<<"Address : "<<address;
 	    gotoxy(c/2-12,r/2+1);cout<<"Passport Number : "<<passportNo;
 	    gotoxy(c/2-12,r/2+2);cout<<"Date Of Birth : "<<dob;
+	}
+
+	void travel_history(){
+        dPrint(history,s,n);
 	}
 
 	bool checkPass(char password[20])
@@ -252,7 +256,7 @@ public:
 	    cout<<"Your Flight Details are : "<<endl;
 
 	    for(auto&i:path.second)
-            i.output();
+            i.output(col,row);
         if(discount!=0)
             cout<<"Total Cost : "<<path.first-discount;
 	}
@@ -295,7 +299,7 @@ public:
 	    if(minPath.first!=-1)
         {
             for(auto &i:minPath.second)
-                i.output();
+                i.output(col,row);
             cout<<"Do You Want To Book These Flights (y/n) : ";
             char c;
             cin>>c;
@@ -396,7 +400,7 @@ void signup(fstream&file)
 //    cout<<"Disconnected Components : "<<k<<endl;
 //}
 
-pair<int,vector<Flight>> shortestPathCost(unordered_map<string,vector<Flight>>&graph,string src,string dest)
+pair<int,vector<Flight>> shortestPathCost(string src,string dest)
 {
     unordered_map<string,int>dist;
     unordered_map<string,Flight>parent;
@@ -436,7 +440,7 @@ pair<int,vector<Flight>> shortestPathCost(unordered_map<string,vector<Flight>>&g
     return {dist[temp],st};
 }
 
-pair<int,vector<Flight>> shortestPathTime(unordered_map<string,vector<Flight>>&graph,string src,string dest)
+pair<int,vector<Flight>> shortestPathTime(string src,string dest)
 {
     unordered_map<string,int>dist;
     unordered_map<string,Flight>parent;
@@ -475,6 +479,40 @@ pair<int,vector<Flight>> shortestPathTime(unordered_map<string,vector<Flight>>&g
     return {dist[temp],st};
 }
 
+void search_flights()
+{
+    string src,dest;
+    gotoxy(col/2-12,row/2-1);cout<<"Enter Source : ";
+    cin>>src;
+    gotoxy(col/2-12,row/2+1);cout<<"Enter Destination : ";
+    cin>>dest;
+
+    pair<int,vector<Flight>>path1=shortestPathCost(src,dest);
+    pair<int,vector<Flight>>path2=shortestPathTime(src,dest);
+
+    if(path1.first!=-1){
+        gotoxy(col/2-9,row/2-1);cout<<"Cheapest Route :-\n";
+        for(auto &i:path1.second){
+            i.output(col,row);
+            cout<<endl;
+        }
+        cout<<endl;
+        gotoxy(col/2-9,row/2+1);cout<<"Fastest Route :-\n";
+        for(auto &i:path2.second){
+            i.output(col,row);
+            cout<<endl;
+        }
+
+        cout<<endl;
+    }
+    else{
+        cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
+        return;
+    }
+
+}
+
+
 int main()
 {
      Maximize();
@@ -485,7 +523,6 @@ int main()
     int ch;
     fstream file,file2;
     Flight ff;
-    printFplanner(col,1);
     file2.open("Flights.dat",ios::in|ios::binary);
     while(file2.read((char*)&ff,sizeof(ff)))
     {
@@ -504,6 +541,8 @@ int main()
 //    dfs_util(graph);
     file.open("passenger.dat",ios::app|ios::in|ios::binary);
     do{
+        system("cls");
+        printFplanner(col,1);
         gotoxy(col/2-3,row/2-2);cout<<"1.Signup ";
         gotoxy(col/2-3,row/2-1);cout<<"2.Login  ";
         gotoxy(col/2-3,row/2);cout<<"3.Exit  ";
@@ -513,17 +552,49 @@ int main()
         {
             case 1:signup(file);break;
             case 2:if(login(p,file)){
-                cout<<endl;
-                p.output(col,row);
-                cout<<"1.Show my Profile";
-                cout<<"2.Search Flights";
-                cout<<"3.Book Flight";
-                cout<<"4.Travel History";
-                break;
+                int c=5;
+                do{
+                    system("cls");
+                    printFplanner(col,1);
+                    gotoxy(col/2-10,row/2-2);cout<<"1.Show my Profile\n";
+                    gotoxy(col/2-10,row/2-1);cout<<"2.Search Flights\n";
+                    gotoxy(col/2-10,row/2);cout<<"3.Book Flight\n";
+                    gotoxy(col/2-10,row/2+1);cout<<"4.Travel History\n";
+                    gotoxy(col/2-10,row/2+3);cout<<"Enter Your Choice : ";
+
+                    cin>>c;
+                    switch(c){
+                        case 1:
+                            system("cls");
+                            p.output(col,row);
+                            _getch();
+                            break;
+                        case 2:
+                            system("cls");
+                            search_flights();
+                            _getch();
+                            break;
+                        case 3:
+                            p.book();
+                            _getch();
+                            break;
+                        case 4:
+                            p.travel_history();
+                            _getch();
+                            break;
+                        case 5:
+                            break;
+                        default:gotoxy(col/2-8,row/2-2);cout<<"Invalid Choice";
+
+                    }
+                }
+                while(c!=5);
             }
-            cout<<"enter";
+            break;
+//            cout<<"enter";
 
         }
     }while(ch!=3);
 
+    return 0;
 }
