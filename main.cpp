@@ -224,8 +224,16 @@ void dInsert(int arr[],int &n,int &s,int data)
 
 void dPrint(int arr[],int &s,int &n)
 {
-    for(int i=s;i>=0;i--)cout<<arr[i]<<" ";
-    for(int i=n-1;i>s;i--)cout<<arr[i]<<" ";
+    system("cls");
+    cout<<"\t\tYour Flight History : ";
+    int j=4;
+    for(int i=s;i>=0;i--){
+        flight[arr[i]].output(8,j);j+=8;
+    }
+    for(int i=n-1;i>s;i--){
+        flight[arr[i]].output(8,j);j+=8;
+    }
+
 }
 
 class Passenger {
@@ -305,22 +313,17 @@ public:
 	    int j=12;
 	    for(auto&i:path.second)
             {i.output(col/2-13,j);j+=8;}
-
+        _getch();
 	}
 
-	void book()
+	void book(string src,string dest,bool ret)
 	{
 	    system("cls");
-	    printBook(col,1,1);
-        string src,dest;
+
+        printBook(col,1,1);
+
 	    char x;
 	    int duration=0,cost=0;
-
-	    gotoxy(col/2-15,row/2-1);cout<<"Enter Source City : ";
-	    cin>>src;
-
-	    gotoxy(col/2-20,row/2);cout<<"Enter Destination City : ";
-	    cin>>dest;
 
         pair<int,vector<Flight>>minPath;
         int redeemed=0;
@@ -353,12 +356,28 @@ public:
 	        system("cls");
 	        printBook(col,1,0);
             gotoxy(col/2-27,row/2-1);cout<<"WooHoo! You are all set to go"<<'\n';
-            gotoxy(col/2-27,row/2-1);cout<<"Congratulations! You have received a discount coupon of "<<cost*0.05;
+            gotoxy(col/2-27,row/2);cout<<"Congratulations! You have received a discount coupon of "<<cost*0.05;
             discount+=cost*0.05;
             for(auto &i:minPath.second)
                 dInsert(history,n,s,i.getFlightNo());
                 _getch();
 
+	    };
+
+	    auto bookreturn=[&]()
+	    {
+
+	        system("cls");
+            char chc;
+            if(ret==1){
+                gotoxy(col/2-27,row/2-1);cout<<"Do You want To Book Return Flight? (y/n) : ";cin>>chc;
+                do{
+                    if(chc=='y' || chc=='Y')
+                        book(dest,src,0);
+                    else if(chc=='n' || chc=='N');
+                }
+                while(chc!='n' && chc!='N' && chc!='y' && chc!='Y');
+            }
 	    };
 
 	    if(minPath.first!=-1)
@@ -392,16 +411,29 @@ public:
                     }
                     else booked();
                 }
-
                 showBooked(minPath,src,dest,redeemed,cost,duration);
+                bookreturn();
             }
-            else cout<<"Booking Canceled!";
+            else {system("cls");gotoxy(col/2-8,row/2);cout<<"Booking Canceled!";}
 	    }
 	    else
         {   system("cls");
             printBook(col,1,0);
             gotoxy(col/2-17-src.length()/2-dest.length()/2,row/2-1);cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
         }
+	}
+
+	void book_util()
+	{
+	    system("cls");
+	    printBook(col,1,1);
+        string src,dest;
+        gotoxy(col/2-15,row/2-1);cout<<"Enter Source City : ";
+	    cin>>src;
+
+	    gotoxy(col/2-20,row/2);cout<<"Enter Destination City : ";
+	    cin>>dest;
+	    book(src,dest,1);
 	}
 };
 
@@ -678,11 +710,11 @@ int main()
                 do{
                     system("cls");
                     printFplanner(col,1);
-                    gotoxy(col/2-10,row/2-2);cout<<"1.Show my Profile\n";
-                    gotoxy(col/2-10,row/2-1);cout<<"2.Search Flights\n";
-                    gotoxy(col/2-10,row/2);cout<<"3.Book Flight\n";
-                    gotoxy(col/2-10,row/2+1);cout<<"4.Travel History\n";
-                    gotoxy(col/2-10,row/2+2);cout<<"4.Travel History\n";
+                    gotoxy(col/2-10,row/2-2);cout<<"1.Show my Profile";
+                    gotoxy(col/2-10,row/2-1);cout<<"2.Search Flights";
+                    gotoxy(col/2-10,row/2);cout<<"3.Book Flight";
+                    gotoxy(col/2-10,row/2+1);cout<<"4.Travel History";
+                    gotoxy(col/2-10,row/2+2);cout<<"5.Logout";
 
                     gotoxy(col/2-10,row/2+4);cout<<"Enter Your Choice : ";
 
@@ -700,7 +732,7 @@ int main()
                             _getch();
                             break;
                         case 3:
-                            p.book();
+                            p.book_util();
                             _getch();
                             break;
                         case 4:
