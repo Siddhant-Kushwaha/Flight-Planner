@@ -682,7 +682,9 @@ int main()
                     gotoxy(col/2-10,row/2-1);cout<<"2.Search Flights\n";
                     gotoxy(col/2-10,row/2);cout<<"3.Book Flight\n";
                     gotoxy(col/2-10,row/2+1);cout<<"4.Travel History\n";
-                    gotoxy(col/2-10,row/2+3);cout<<"Enter Your Choice : ";
+                    gotoxy(col/2-10,row/2+2);cout<<"4.Travel History\n";
+
+                    gotoxy(col/2-10,row/2+4);cout<<"Enter Your Choice : ";
 
                     cin>>c;
                     switch(c){
