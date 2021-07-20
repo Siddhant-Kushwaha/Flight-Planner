@@ -67,19 +67,30 @@ gotoxy(c/2-81,r+5);color(7);cout<<"#+#         #+#             #+#     #+#    #+
 gotoxy(c/2-81,r+6);color(7);cout<<"###         ##########  ###########  ########   ###    ###      ###          ###         ##########  ###     ###  ###    ####  ###    ####  ##########  ###    ### "<<endl;Sleep(50);
 
 }
-void printBook()
+
+void printSearch()
 {
 
-color(6);cout<<",-----.   ,-----.  ,-----. ,--. ,--.    ,--.  ,--. ,-----. ,--.   ,--."<<endl;Sleep(50);
-color(6);cout<<"|  |) /_ '  .-.  ''  .-.  '|  .'   /    |  ,'.|  |'  .-.  '|  |   |  |"<<endl;Sleep(50);
-color(6);cout<<"|  .-.  \\|  | |  ||  | |  ||  .   '     |  |' '  ||  | |  ||  |.'.|  |"<<endl;Sleep(50);
-color(6);cout<<"|  '--' /'  '-'  ''  '-'  '|  |\\   \\    |  | `   |'  '-'  '|   ,'.   |"<<endl;Sleep(50);
-color(6);cout<<"`------'  `-----'  `-----' `--' '--'    `--'  `--' `-----' '--'   '--'"<<endl;Sleep(50);
+gotoxy(col/2-27,1);color(10);cout<<"(  ____ \\(  ____ \\(  ___  )(  ____ )(  ____ \\|\\     /|"<<endl;Sleep(50);
+gotoxy(col/2-27,2);color(10);cout<<"| (    \\/| (    \\/| (   ) || (    )|| (    \\/| )   ( |"<<endl;Sleep(50);
+gotoxy(col/2-27,3);color(10);cout<<"| (_____ | (__    | (___) || (____)|| |      | (___) |"<<endl;Sleep(50);
+gotoxy(col/2-27,4);color(10);cout<<"(_____  )|  __)   |  ___  ||     __)| |      |  ___  |"<<endl;Sleep(50);
+gotoxy(col/2-27,5);color(10);cout<<"      ) || (      | (   ) || (\\ (   | |      | (   ) |"<<endl;Sleep(50);
+gotoxy(col/2-27,6);color(10);cout<<"/\\____) || (____/\\| )   ( || ) \\ \\__| (____/\\| )   ( |"<<endl;Sleep(50);
+gotoxy(col/2-27,7);color(10);cout<<"\\_______)(_______/|/     \\||/   \\__/(_______/|/     \\|"<<endl;Sleep(50);
 
 
 
 
+}
 
+void printBook(int c,int r,int a)
+{
+    gotoxy(c/2-34,r++);color(7);cout<<",-----.   ,-----.  ,-----. ,--. ,--.    ,--.  ,--. ,-----. ,--.   ,--."<<endl;Sleep(a);
+    gotoxy(c/2-34,r++);color(7);cout<<"|  |) /_ '  .-.  ''  .-.  '|  .'   /    |  ,'.|  |'  .-.  '|  |   |  |"<<endl;Sleep(a);
+    gotoxy(c/2-34,r++);color(7);cout<<"|  .-.  \\|  | |  ||  | |  ||  .   '     |  |' '  ||  | |  ||  |.'.|  |"<<endl;Sleep(a);
+    gotoxy(c/2-34,r++);color(7);cout<<"|  '--' /'  '-'  ''  '-'  '|  |\\   \\    |  | `   |'  '-'  '|   ,'.   |"<<endl;Sleep(a);
+    gotoxy(c/2-34,r++);color(7);cout<<"`------'  `-----'  `-----' `--' '--'    `--'  `--' `-----' '--'   '--'"<<endl;Sleep(a);
 }
 void printMagnify()
 {
@@ -105,6 +116,11 @@ color(6);cout<<"                                              @#  (@"<<endl;Slee
 color(6);cout<<"                                                ,*"<<endl;Sleep(50);
 }
 //end of Design section
+
+
+ vector<string>city={"Mumbai","Delhi","NewYork","Chicago","Paris","London","Kolkata","Houston","Beijing","Tokyo","Sydney","Moscow","Toronto","Seoul","Singapore"
+    ,"Dubai","Berlin","Auckland","CapeTown","Barcelona"};
+
 class Flight {
 	char flightName[20];
 	int flightNo;
@@ -137,12 +153,12 @@ public:
 
 	void output(int c,int r)
 	{
-	    gotoxy(c/2-9,r/2-3);cout<<"Flight Name : "<<flightName;
-	    gotoxy(c/2-9,r/2-3);cout<<"Flight Number : "<<flightNo;
-	    gotoxy(c/2-9,r/2-3);cout<<"from : "<<from;
-	    gotoxy(c/2-9,r/2-3);cout<<"to : "<<to;
-	    gotoxy(c/2-9,r/2-3);cout<<"cost : "<<cost;
-	    gotoxy(c/2-9,r/2-3);cout<<"duration : "<<duration;
+	    gotoxy(c,r);cout<<"Flight Name : "<<flightName;
+	    gotoxy(c,r+1);cout<<"Flight Number : "<<flightNo;
+	    gotoxy(c,r+2);cout<<"from : "<<from;
+	    gotoxy(c,r+3);cout<<"to : "<<to;
+	    gotoxy(c,r+4);cout<<"cost : "<<cost;
+	    gotoxy(c,r+5);cout<<"duration : "<<duration;
 
 	}
 
@@ -177,6 +193,8 @@ public:
 	}
 };
 unordered_map<string,vector<Flight>> graph;
+unordered_map<int,Flight>flight;
+unordered_set<string> cities;
 pair<int,vector<Flight>> shortestPathCost(string src,string dest);
 pair<int,vector<Flight>> shortestPathTime(string src,string dest);
 
@@ -241,69 +259,104 @@ public:
         dPrint(history,s,n);
 	}
 
-	bool checkPass(char password[20])
+	bool checkPass(string password)
 	{
-	    return strcmp(this->password,password);
+	    return strcmp(this->password,password.c_str());
 	}
 
-	bool checkName(char name[20])
+	bool checkName(string name)
 	{
-	    return strcmp(this->name,name);
+	    return strcmp(this->name,name.c_str());
 	}
 
-	void showBooked(pair<int,vector<Flight>>path,string src,string dest,int discount)
+	string getName()
 	{
-	    cout<<"Your Flight Details are : "<<endl;
+	    return (string)name;
+	}
 
+	string getPassword()
+	{
+	    return (string)password;
+	}
+
+	void showBooked(pair<int,vector<Flight>>path,string src,string dest,int discount,int cost,int duration)
+	{
+	    system("cls");
+	    printBook(col,1,0);
+	    gotoxy(col/2-13,7);cout<<"Your Flight Details are : ";
+        gotoxy(col/2-13,9);cout<<"Total Cost : "<<cost-discount;
+        gotoxy(col/2-13,10);cout<<"Total Duration : "<<duration;
+	    int j=12;
 	    for(auto&i:path.second)
-            i.output(col,row);
-        if(discount!=0)
-            cout<<"Total Cost : "<<path.first-discount;
+            {i.output(col/2-9,j);j+=8;}
+
 	}
 
 	void book()
-	{   string src,dest;
+	{
+	    system("cls");
+	    printBook(col,1,1);
+        string src,dest;
 	    char x;
-	    cout<<"Enter Source City : ";
+	    int duration=0,cost=0;
+
+	    gotoxy(col/2-9,row/2-1);cout<<"Enter Source City : ";
 	    cin>>src;
-	    cout<<"Enter Destination City : ";
+
+	    gotoxy(col/2-9,row/2);cout<<"Enter Destination City : ";
 	    cin>>dest;
-	    cout<<"What matters more to you Time or Money?(Press t for Time and m for Money) : \n";
+
         pair<int,vector<Flight>>minPath;
         int redeemed=0;
+
 	    do
-	    {   cin>>x;
-	        if(x=='t')
-            {
-                minPath=shortestPathTime(src,dest);
+	    {
+	        printBook(col,1,0);
+            gotoxy(col/2-9,row/2+2);cout<<"What matters more to you Time or Money?(t/m) : ";cin>>x;
+	        if(x=='t') {
+                    minPath=shortestPathTime(src,dest);
+                    duration=minPath.first;
+                    for(auto&i:minPath.second)cost+=i.getCost();
+	        }
+            else if(x=='m') {
+                    minPath=shortestPathCost(src,dest);
+                    cost=minPath.first;
+                for(auto&i:minPath.second)duration+=i.getDuration();
             }
-            else if(x=='m')
-            {
-                minPath=shortestPathCost(src,dest);
-            }
+
             else
             {
-                cout<<"It looks like enjoyment matters more to you.(Press either t or m)"<<'\n';
+                gotoxy(col/2-9,row/2+4);
+                cout<<"It looks like enjoyment matters more to you.(Press either t or m)";
+                system("cls");
             }
-	    }while(x=='t'||x=='m');
+
+        }while(x!='t' && x!='m');
 
 	    auto booked=[&](){
-            cout<<"\nWooHoo! You are all set to go\n";
-            cout<<"Congratulations! You have received a discount coupon of "<<minPath.first*0.05;
-            discount+=minPath.first*0.05;
-            for(auto &i:minPath.second){
+	        system("cls");
+	        printBook(col,1,0);
+            gotoxy(col/2-14,row/2-1);cout<<"WooHoo! You are all set to go";
+            cout<<"Congratulations! You have received a discount coupon of "<<cost*0.05;
+            discount+=cost*0.05;
+            for(auto &i:minPath.second)
                 dInsert(history,n,s,i.getFlightNo());
-            }
+                _getch();
+
 	    };
 
 	    if(minPath.first!=-1)
         {
+            system("cls");
+            printBook(col,1,0);
+            int j=10;
+            gotoxy(col/2-19,8);cout<<"Best Route : ";
             for(auto &i:minPath.second)
-                i.output(col,row);
-            cout<<"Do You Want To Book These Flights (y/n) : ";
+                {i.output(col/2-9,j);j+=10;}
+            gotoxy(col/2-19,7);cout<<"Do You Want To Book the Following Flights (y/n) : ";
             char c;
             cin>>c;
-            if(c=='y' || 'Y')
+            if(c=='y' || c=='Y')
             {
                 if(!discount)
                 {
@@ -311,21 +364,25 @@ public:
                 }
                 else
                 {
-                    cout<<"Do You Want To Redeem Your Discount Coupon (y/n) : ";
+                    gotoxy(col/2-19,row/2-1);cout<<"Do You Want To Redeem Your Discount Coupon (y/n) : ";
                     char ch;
                     cin>>ch;
                     if(ch=='y'){
-                        redeemed=discount;
-                        discount=0;
+                        redeemed=min(cost,discount);
+                        discount-=redeemed;
                         booked();
                     }
                     else booked();
                 }
 
-                showBooked(minPath,src,dest,redeemed);
+                showBooked(minPath,src,dest,redeemed,cost,duration);
             }
             else cout<<"Booking Canceled!";
 	    }
+	    else
+        {
+            gotoxy(col/2-17-src.length()/2-dest.length()/2,row/2-1);cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
+        }
 	}
 };
 
@@ -336,8 +393,7 @@ bool login(Passenger&p,fstream&file)
     file.seekg(0,ios::beg);
     bool loggedin=false;
     Passenger temp;
-    char name[20];
-    char password[20];
+    string name ,password;
     system("cls");
     gotoxy(col/2-9,row/2-1);cout<<"Enter Name : ";cin>>name;
     gotoxy(col/2-9,row/2);cout<<"Enter Password : ";cin>>password;
@@ -349,7 +405,6 @@ bool login(Passenger&p,fstream&file)
             break;
         }
     }
-    _getch();
     return loggedin;
 }
 
@@ -368,11 +423,26 @@ void signup(fstream&file)
     }
     system("cls");
 
-    if(file.write((char*)&p,sizeof(p)))
-        gotoxy(col/2-12,row/2-5);cout<<"Successfully Signed Up!";
+    if(file.write((char*)&p,sizeof(p))) {gotoxy(col/2-12,row/2-5);cout<<"Successfully Signed Up!";}
     p.output(col,row);
     _getch();
     system("cls");
+}
+
+bool logout(fstream &f1,Passenger &p1)
+{
+    f1.seekg(0);
+    Passenger temp;
+    while(f1.read((char*)&temp,sizeof(temp)))
+    {
+         if(!p1.checkName(temp.getName()) && !p1.checkPass(temp.getPassword()))
+            break;
+    }
+    int pos=f1.tellg();
+    f1.seekp(pos-sizeof(p1),ios::beg);
+    if(f1.write((char*)&p1,sizeof(p1)))
+        {return 1;}
+    return 0;
 }
 
 
@@ -402,6 +472,7 @@ void signup(fstream&file)
 
 pair<int,vector<Flight>> shortestPathCost(string src,string dest)
 {
+    if(cities.find(src)==cities.end() || cities.find(dest)==cities.end()) return {-1,vector<Flight>()};
     unordered_map<string,int>dist;
     unordered_map<string,Flight>parent;
     dist[src]=0;
@@ -426,7 +497,6 @@ pair<int,vector<Flight>> shortestPathCost(string src,string dest)
                  parent[toCity]=f;
             }
         }
-
     }
    vector<Flight>st;
     string temp=dest;
@@ -437,11 +507,12 @@ pair<int,vector<Flight>> shortestPathCost(string src,string dest)
     st.push_back(parent[dest]);
     reverse(st.begin(),st.end());
 
-    return {dist[temp],st};
+    return {dist[temp]?dist[temp]:-1,st};
 }
 
 pair<int,vector<Flight>> shortestPathTime(string src,string dest)
 {
+    if(cities.find(src)==cities.end() || cities.find(dest)==cities.end()) return {-1,vector<Flight>()};
     unordered_map<string,int>dist;
     unordered_map<string,Flight>parent;
     dist[src]=0;
@@ -476,12 +547,16 @@ pair<int,vector<Flight>> shortestPathTime(string src,string dest)
     }
     st.push_back(parent[dest]);
     reverse(st.begin(),st.end());
-    return {dist[temp],st};
+    return {dist[temp]?dist[temp]:-1,st};
 }
 
 void search_flights()
 {
     string src,dest;
+    printSearch();
+    for(int i=0;i<col;i++){
+            gotoxy(i,8);cout<<"-";Sleep(5);
+    }
     gotoxy(col/2-12,row/2-1);cout<<"Enter Source : ";
     cin>>src;
     gotoxy(col/2-12,row/2+1);cout<<"Enter Destination : ";
@@ -490,23 +565,47 @@ void search_flights()
     pair<int,vector<Flight>>path1=shortestPathCost(src,dest);
     pair<int,vector<Flight>>path2=shortestPathTime(src,dest);
 
-    if(path1.first!=-1){
-        gotoxy(col/2-9,row/2-1);cout<<"Cheapest Route :-\n";
-        for(auto &i:path1.second){
-            i.output(col,row);
-            cout<<endl;
+    system("cls");
+    for(int j=0;j<3;j++){
+       string sear="Searching for Best Flights ...";
+       for(int i=0;i<sear.length();i++) {
+            gotoxy(col/2-10+i,row/2-1);cout<<sear[i];
+            Sleep(40);
+       }
+        Sleep(100);
+        for(int i=0;i<sear.length();i++)
+        {
+            gotoxy(col/2-10+i,row/2-1);cout<<" ";
+            Sleep(40);
         }
-        cout<<endl;
-        gotoxy(col/2-9,row/2+1);cout<<"Fastest Route :-\n";
-        for(auto &i:path2.second){
-            i.output(col,row);
-            cout<<endl;
-        }
+    }
+    printSearch();
+    for(int i=0;i<col;i++){
+            gotoxy(i,8);cout<<"-";Sleep(5);
+    }
+    color(7);
 
-        cout<<endl;
+    int j=12;
+    if(path1.first!=-1){
+        gotoxy(col/4-9,10);cout<<"Cheapest Route :-\n";
+        for(auto &i:path1.second){
+            i.output(col/4-9,j);
+            Sleep(10);
+            j+=7;
+        }
+        for(int i=9;i<row;i++){
+            gotoxy(col/2,i);
+            cout<<"|";Sleep(20);
+        }
+        j=12;
+        gotoxy(3*col/4-9,10);cout<<"Fastest Route :-\n";
+        for(auto &i:path2.second){
+            i.output(3*col/4-9,j);Sleep(10);
+            j+=7;
+        }
     }
     else{
-        cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
+        gotoxy(col/2-17-src.length()/2-dest.length()/2,row/2-1);cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
         return;
     }
 
@@ -515,9 +614,11 @@ void search_flights()
 
 int main()
 {
-     Maximize();
+    Maximize();
     GetScreenSize(row,col);
 
+
+    for(auto&cty:city)cities.insert(cty);
     vector<Passenger> psngrs;
     Passenger p;
     int ch;
@@ -526,6 +627,7 @@ int main()
     file2.open("Flights.dat",ios::in|ios::binary);
     while(file2.read((char*)&ff,sizeof(ff)))
     {
+        flight[ff.getFlightNo()]=ff;
         graph[ff.getFrom()].push_back(ff);
     }
 
@@ -582,13 +684,24 @@ int main()
                             p.travel_history();
                             _getch();
                             break;
-                        case 5:
+                        case 5:file.close();file.open("passenger.dat",ios::out|ios::in|ios::binary);
+                                if(logout(file,p))
+                                {system("cls");gotoxy(col/2-11,row/2-1);cout<<"Logged out successfully\n";_getch();}file.close();
+                                file.open("passenger.dat",ios::app|ios::in|ios::binary);
+                        case 6:
                             break;
                         default:gotoxy(col/2-8,row/2-2);cout<<"Invalid Choice";
 
                     }
                 }
                 while(c!=5);
+            }
+            else{
+                    system("cls");
+            gotoxy(col/2-6,row/2-1);
+                cout<<"Login Failed ";
+                _getch();
+                file.clear();
             }
             break;
 //            cout<<"enter";
