@@ -115,11 +115,27 @@ color(6);cout<<"                                           *@      @,"<<endl;Sle
 color(6);cout<<"                                              @#  (@"<<endl;Sleep(50);
 color(6);cout<<"                                                ,*"<<endl;Sleep(50);
 }
+void PrintProfile(int c,int r,int a)
+{
+
+
+gotoxy(c/2-42,r++);color(7);cout<<".88b  d88. db    db      d8888b. d8888b.  .d88b.  d88888b d888888b db      d88888b"<<endl;Sleep(a);
+gotoxy(c/2-42,r++);color(7);cout<<"88'YbdP`88 `8b  d8'      88  `8D 88  `8D .8P  Y8. 88'       `88'   88      88'"<<endl;Sleep(a);
+gotoxy(c/2-42,r++);color(7);cout<<"88  88  88  `8bd8'       88oodD' 88oobY' 88    88 88ooo      88    88      88ooooo"<<endl;Sleep(a);
+gotoxy(c/2-42,r++);color(7);cout<<"88  88  88    88         88~~~   88`8b   88    88 88~~~      88    88      88~~~~~"<<endl;Sleep(a);
+gotoxy(c/2-42,r++);color(7);cout<<"88  88  88    88         88      88 `88. `8b  d8' 88        .88.   88booo. 88."<<endl;Sleep(a);
+gotoxy(c/2-42,r++);color(7);cout<<"YP  YP  YP    YP         88      88   YD  `Y88P'  YP      Y888888P Y88888P Y88888P"<<endl;Sleep(a);
+
+
+
+
+}
 //end of Design section
 
 
- vector<string>city={"Mumbai","Delhi","NewYork","Chicago","Paris","London","Kolkata","Houston","Beijing","Tokyo","Sydney","Moscow","Toronto","Seoul","Singapore"
-    ,"Dubai","Berlin","Auckland","CapeTown","Barcelona"};
+    vector<string>city={"Mumbai","Delhi","New York","Chicago","Paris","London","Kolkata","Houston","Beijing","Tokyo","Sydney","Moscow","Toronto","Seoul","Singapore"
+    ,"Dubai","Berlin","Auckland","CapeTown","Barcelona","Hong Kong","Bangkok","Rome","Amsterdam","Vienna","Shanghai","Prague",
+    "San Fransico","Budapest","Abu Dhabi","Washington D.C","Doha","Karachi","Istanbul","Las Vegas"};
 
 class Flight {
 	char flightName[20];
@@ -288,7 +304,7 @@ public:
         gotoxy(col/2-13,10);cout<<"Total Duration : "<<duration;
 	    int j=12;
 	    for(auto&i:path.second)
-            {i.output(col/2-9,j);j+=8;}
+            {i.output(col/2-13,j);j+=8;}
 
 	}
 
@@ -300,10 +316,10 @@ public:
 	    char x;
 	    int duration=0,cost=0;
 
-	    gotoxy(col/2-9,row/2-1);cout<<"Enter Source City : ";
+	    gotoxy(col/2-15,row/2-1);cout<<"Enter Source City : ";
 	    cin>>src;
 
-	    gotoxy(col/2-9,row/2);cout<<"Enter Destination City : ";
+	    gotoxy(col/2-20,row/2);cout<<"Enter Destination City : ";
 	    cin>>dest;
 
         pair<int,vector<Flight>>minPath;
@@ -312,7 +328,7 @@ public:
 	    do
 	    {
 	        printBook(col,1,0);
-            gotoxy(col/2-9,row/2+2);cout<<"What matters more to you Time or Money?(t/m) : ";cin>>x;
+            gotoxy(col/2-20,row/2+2);cout<<"What matters more to you Time or Money?(t/m) : ";cin>>x;
 	        if(x=='t') {
                     minPath=shortestPathTime(src,dest);
                     duration=minPath.first;
@@ -336,8 +352,8 @@ public:
 	    auto booked=[&](){
 	        system("cls");
 	        printBook(col,1,0);
-            gotoxy(col/2-14,row/2-1);cout<<"WooHoo! You are all set to go";
-            cout<<"Congratulations! You have received a discount coupon of "<<cost*0.05;
+            gotoxy(col/2-27,row/2-1);cout<<"WooHoo! You are all set to go"<<'\n';
+            gotoxy(col/2-27,row/2-1);cout<<"Congratulations! You have received a discount coupon of "<<cost*0.05;
             discount+=cost*0.05;
             for(auto &i:minPath.second)
                 dInsert(history,n,s,i.getFlightNo());
@@ -349,11 +365,11 @@ public:
         {
             system("cls");
             printBook(col,1,0);
-            int j=10;
-            gotoxy(col/2-19,8);cout<<"Best Route : ";
+            int j=12;
+            gotoxy(col/2-6,10);cout<<"Best Route : ";
             for(auto &i:minPath.second)
                 {i.output(col/2-9,j);j+=10;}
-            gotoxy(col/2-19,7);cout<<"Do You Want To Book the Following Flights (y/n) : ";
+            gotoxy(col/2-24,8);cout<<"Do You Want To Book the Following Flights (y/n) : ";
             char c;
             cin>>c;
             if(c=='y' || c=='Y')
@@ -364,7 +380,9 @@ public:
                 }
                 else
                 {
-                    gotoxy(col/2-19,row/2-1);cout<<"Do You Want To Redeem Your Discount Coupon (y/n) : ";
+                    system("cls");
+                    printBook(col,1,0);
+                    gotoxy(col/2-24,row/2-1);cout<<"Do You Want To Redeem Your Discount Coupon (y/n) : ";
                     char ch;
                     cin>>ch;
                     if(ch=='y'){
@@ -380,7 +398,8 @@ public:
             else cout<<"Booking Canceled!";
 	    }
 	    else
-        {
+        {   system("cls");
+            printBook(col,1,0);
             gotoxy(col/2-17-src.length()/2-dest.length()/2,row/2-1);cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
         }
 	}
@@ -605,6 +624,7 @@ void search_flights()
         }
     }
     else{
+            system("cls");
         gotoxy(col/2-17-src.length()/2-dest.length()/2,row/2-1);cout<<"There are No Flights Between "<<src<<" and "<<dest<<endl;
         return;
     }
@@ -668,6 +688,7 @@ int main()
                     switch(c){
                         case 1:
                             system("cls");
+                            PrintProfile(col,1,1);
                             p.output(col,row);
                             _getch();
                             break;
