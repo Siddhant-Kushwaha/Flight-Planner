@@ -126,10 +126,30 @@ gotoxy(c/2-42,r++);color(7);cout<<"88  88  88    88         88~~~   88`8b   88  
 gotoxy(c/2-42,r++);color(7);cout<<"88  88  88    88         88      88 `88. `8b  d8' 88        .88.   88booo. 88."<<endl;Sleep(a);
 gotoxy(c/2-42,r++);color(7);cout<<"YP  YP  YP    YP         88      88   YD  `Y88P'  YP      Y888888P Y88888P Y88888P"<<endl;Sleep(a);
 
+}
 
-
+void printFlight(int a)
+{
+gotoxy(col/2-35,row/2-7);cout<<"                      %%%%%%%%%%%#"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-6);cout<<"                       ,%%*      (%%%#."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-5);cout<<"                         %%%         *%%%%."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-4);cout<<"   //%%%%%%%.              ,%%*           *%%%%,"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-3);cout<<"    %%*   (%%#            ..%%%////(#%%%%%%%%%%%%%%%%%%%%%%%%%%%%."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-2);color(6);cout<<"     %%      %%%%%%%%%%%%%##(//*.                             *%%%"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2-1);color(7);cout<<"     //%%                                                       (%%%."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2);color(7);cout<<"      #%%                         %%%%(  %%%%  %%%%// *%%%%%%%%%%  (%%#"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+1);color(8);cout<<"       %%,                                                          .%%"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+2);color(8);cout<<"       .%%%%%%%%%%%%%%%%%####(*                                   .(%%%."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+3);color(9);cout<<"                           (%%(              //%%%%%%%%%%%%%%%%%%%%#,"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+4);color(10);cout<<"                         #%%,            ,%%%%."<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+5);color(11);cout<<"                       %%%.           %%%%,"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+6);color(11);cout<<"                     %%%          (%%%("<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+7);color(12);cout<<"                  .%%%        ,%%%%"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+8);color(12);cout<<"                //%%#       %%%%"<<endl;Sleep(a);
+gotoxy(col/2-35,row/2+9);color(13);cout<<"                .**********,"<<endl;Sleep(a);
 
 }
+
 //end of Design section
 
 
@@ -225,7 +245,7 @@ void dInsert(int arr[],int &n,int &s,int data)
 void dPrint(int arr[],int &s,int &n)
 {
     system("cls");
-    cout<<"\t\tYour Flight History : ";
+    gotoxy(8,2);cout<<"Your Flight History : ";
     int j=4;
     for(int i=s;i>=0;i--){
         flight[arr[i]].output(8,j);j+=8;
@@ -412,7 +432,7 @@ public:
                     else booked();
                 }
                 showBooked(minPath,src,dest,redeemed,cost,duration);
-                bookreturn();
+                if(ret==1)bookreturn();
             }
             else {system("cls");gotoxy(col/2-8,row/2);cout<<"Booking Canceled!";}
 	    }
@@ -617,7 +637,7 @@ void search_flights()
     pair<int,vector<Flight>>path2=shortestPathTime(src,dest);
 
     system("cls");
-    for(int j=0;j<3;j++){
+    for(int j=0;j<2;j++){
        string sear="Searching for Best Flights ...";
        for(int i=0;i<sear.length();i++) {
             gotoxy(col/2-10+i,row/2-1);cout<<sear[i];
@@ -644,15 +664,16 @@ void search_flights()
             Sleep(10);
             j+=7;
         }
-        for(int i=9;i<row;i++){
-            gotoxy(col/2,i);
-            cout<<"|";Sleep(20);
-        }
         j=12;
         gotoxy(3*col/4-9,10);cout<<"Fastest Route :-\n";
         for(auto &i:path2.second){
             i.output(3*col/4-9,j);Sleep(10);
             j+=7;
+        }
+
+        for(int i=9;i<row;i++){
+            gotoxy(col/2,i);
+            cout<<"|";Sleep(1);
         }
     }
     else{
@@ -664,12 +685,40 @@ void search_flights()
 }
 
 
+void welcome()
+{
+    system("cls");
+    string wel="Welcome Folks!";
+    for(int i=0;i<wel.length();i++){
+        gotoxy(col/2-7+i,2);cout<<wel[i];Sleep(100);
+    }
+    printFlight(80);
+
+    Sleep(400);
+    for(int i=0;i<2;i++)
+    {
+        string load=". . . . . . . .";
+        for(int j=0;j<load.length();j++)
+        {
+            gotoxy(col/2-6+j,row-4);cout<<load[j];Sleep(80);
+        }
+        for(int j=0;j<load.length();j++)
+        {
+            gotoxy(col/2-6+j,row-4);cout<<" ";Sleep(80);
+        }
+
+
+    }
+
+}
+
+
 int main()
 {
     Maximize();
     GetScreenSize(row,col);
 
-
+    welcome();
     for(auto&cty:city)cities.insert(cty);
     vector<Passenger> psngrs;
     Passenger p;
